@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load colaborador_tags %}
+
+{% block contenido %}
+    
+<div class="container-fluid" style="margin: 200px;">
+    {% if user.is_superuser or request.user|has_group:"Colaborador" %} 
+        <div class="container-fluid" style="margin-top: 300px;">
+            <a id="boton_post" href="{% url 'apps.posts:crear_post' %}">Crear nuevo post</a>
+        </div>
+    {% endif %}
+    <h2>Ordenar por:</h2>
+    <ul>
+        <li><a id="boton_post" href="{% url 'apps.posts:posts' %}?orden=reciente">Más reciente</a></li>
+        <li><a id="boton_post" href="{% url 'apps.posts:posts' %}?orden=antiguo">Más antiguo</a></li>
+        <li><a id="boton_post" href="{% url 'apps.posts:posts' %}?orden=alfabetico">Orden alfabético</a></li>
+    </ul>
+
+    {% for i in posts %}
+        <br>
+        <li>{{ i.titulo }}</li>
+        <li>{{ i.subtitulo }}</li>
+        <li>{{ i.categoria }}</li>
+        <br>
+        <a id="boton_post" href="{% url 'apps.posts:post_individual' i.id %}">
+            Ingresá a este Post
+        </a>
+    {% empty %}
+        <h1>No hay registros</h1>
+    {% endfor %}
+</div>
+
+{% endblock %}
